@@ -13,9 +13,7 @@ class Solution {
             if(x != y) pq.offer(y-x);  
         }
 
-        if(pq.size()==0) return 0;
-        else
-        return pq.peek();
+            return 0;
 
     }
 }
