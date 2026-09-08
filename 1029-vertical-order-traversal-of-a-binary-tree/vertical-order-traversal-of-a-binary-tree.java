@@ -14,17 +14,13 @@ class Solution {
         @Override
         public int compareTo(NodeInfo other) {
 
-            // 1. Column: left -> right
             if (this.col != other.col) {
                 return this.col - other.col;
             }
-
-            // 2. Row: top -> bottom
             if (this.row != other.row) {
                 return this.row - other.row;
             }
 
-            // 3. Same row + column: smaller value first
             return this.val - other.val;
         }
     }
@@ -40,17 +36,18 @@ class Solution {
 
         List<List<Integer>> ans = new ArrayList<>();
 
+        List<Integer> curr = null;
         int prevCol = Integer.MIN_VALUE;
 
         for (NodeInfo node : nodes) {
 
-            // New column
             if (node.col != prevCol) {
-                ans.add(new ArrayList<>());
+                curr = new ArrayList<>();
+                ans.add(curr);
                 prevCol = node.col;
             }
 
-            ans.get(ans.size() - 1).add(node.val);
+            curr.add(node.val);
         }
 
         return ans;
