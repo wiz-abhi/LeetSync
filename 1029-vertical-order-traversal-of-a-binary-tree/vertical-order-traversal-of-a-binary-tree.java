@@ -1,67 +1,43 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 class Solution {
-
-    class NodeInfo implements Comparable<NodeInfo> {
-        int row;
-        int col;
-        int val;
-
-        NodeInfo(int row, int col, int val) {
-            this.row = row;
-            this.col = col;
-            this.val = val;
-        }
-
-        @Override
-        public int compareTo(NodeInfo other) {
-
-            if (this.col != other.col) {
-                return this.col - other.col;
-            }
-            if (this.row != other.row) {
-                return this.row - other.row;
-            }
-
-            return this.val - other.val;
-        }
-    }
-
+    Map<Integer,List<int[]> > map=new TreeMap<>();
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-
-        List<NodeInfo> nodes = new ArrayList<>();
-
-        dfs(root, 0, 0, nodes);
-
-        // Sort by col -> row -> value
-        Collections.sort(nodes);
-
-        List<List<Integer>> ans = new ArrayList<>();
-
-        List<Integer> curr = null;
-        int prevCol = Integer.MIN_VALUE;
-
-        for (NodeInfo node : nodes) {
-
-            if (node.col != prevCol) {
-                curr = new ArrayList<>();
-                ans.add(curr);
-                prevCol = node.col;
+        dfs(root,0,0);
+        List<List<Integer>> res=new ArrayList<>();
+        for(List<int []> list:map.values()){
+            list.sort(
+                (a,b)->{
+                if(a[0]!=b[0]) return a[0]-b[0];
+                return a[1]-b[1];
             }
-
-            curr.add(node.val);
+            );
+            List<Integer> temp=new ArrayList<>();
+            for(int[] x:list){
+                temp.add(x[1]);
+            }
+            res.add(temp);
         }
-
-        return ans;
+        return res;
     }
-
-    void dfs(TreeNode root, int row, int col, List<NodeInfo> nodes) {
-
-        if (root == null) {
-            return;
-        }
-
-        nodes.add(new NodeInfo(row, col, root.val));
-
-        dfs(root.left, row + 1, col - 1, nodes);
-        dfs(root.right, row + 1, col + 1, nodes);
+     void dfs(TreeNode root,int row,int col){
+        if(root==null) return;
+        map.putIfAbsent(col,new ArrayList<>());
+        map.get(col).add(new int[]{row,root.val});
+        dfs(root.left,row+1,col-1);
+        dfs(root.right,row+1,col+1);
     }
 }
