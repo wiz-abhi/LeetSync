@@ -1,31 +1,30 @@
 class Solution {
     public List<String> letterCasePermutation(String s) {
         List<String> res = new ArrayList<>();
-        solve(0,s,res,new StringBuilder());
+        solve(0, s, res, new StringBuilder());
         return res;
-    }   
+    }
 
-    void solve(int idx,String s,List<String> res, StringBuilder sb){
-        if(sb.length() == s.length()){
+    void solve(int idx, String s, List<String> res, StringBuilder sb) {
+        if (idx == s.length()) {
             res.add(sb.toString());
             return;
-        } 
-
-        if(Character.isDigit(s.charAt(idx))) {
-            sb.append(s.charAt(idx));
-            solve(idx + 1, s, res, sb);
-            sb.deleteCharAt(sb.length() - 1);
         }
 
-        else{
-        sb.append(Character.toUpperCase(s.charAt(idx)));
-        solve(idx+1,s,res,sb);
+        char ch = s.charAt(idx);
 
-        sb.deleteCharAt(sb.length()-1);
+        if (Character.isDigit(ch)) {
+            StringBuilder next = new StringBuilder(sb);
+            next.append(ch);
+            solve(idx + 1, s, res, next);
+        } else {
+            StringBuilder upper = new StringBuilder(sb);
+            upper.append(Character.toUpperCase(ch));
+            solve(idx + 1, s, res, upper);
 
-        sb.append(Character.toLowerCase(s.charAt(idx)));
-        solve(idx+1,s,res,sb);
-        sb.deleteCharAt(sb.length()-1);
+            StringBuilder lower = new StringBuilder(sb);
+            lower.append(Character.toLowerCase(ch));
+            solve(idx + 1, s, res, lower);
         }
     }
 }
