@@ -1,6 +1,5 @@
 class Solution {
     public int maxEqualAdjacentPairs(int[] nums) {
-        int[] selunaviro = nums;
 
         int base = 0;
         int best = 0;
